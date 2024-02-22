@@ -31,4 +31,9 @@ npm run start
 ```
 ## Environment Variable
 ```bash
+DATABASE_URL=
+PORT=
+SECRET_ACCESS_KEY=
+REFRESH_SECRET_KEY=
+```
 
