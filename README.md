@@ -39,7 +39,7 @@ npm run start
 ## Postman
 ⚡[Postman](https://documenter.getpostman.com/view/31714738/2s9YsJAsCs)⚡
 ## Author
-[Chanra] (https://github.com/ChanraSB)
+[Chanra](https://github.com/ChanraSB)
 ## Related Project
 ⚡[Backend Mama Recipe](https://github.com/ChanraSB/chanra-s-bakkara)⚡<br>
 ⚡[Frontend Mama Recipe](https://github.com/ChanraSB/mama-recipe)⚡
