@@ -25,15 +25,15 @@ Node.js, Express.js and PostgreSQL
     "nodemon": "^3.0.2",
     "prisma": "^5.7.0"
 ```
-## Getting Started
-```bash
-npm run start
-```
 ## Environment Variable
 ```bash
 DATABASE_URL=
 PORT=
 SECRET_ACCESS_KEY=
 REFRESH_SECRET_KEY=
+```
+## Getting Started
+```bash
+npm run start
 ```
 
