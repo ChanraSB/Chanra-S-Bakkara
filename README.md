@@ -7,3 +7,7 @@ Users can register and login to their account, edit their profile, add a new rec
 ## Build With 
 Node.js, Express.js and PostgreSQL
 ## Getting Started
+```bash
+npm run start
+
+```
