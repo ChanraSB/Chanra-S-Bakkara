@@ -43,4 +43,5 @@ npm run start
 ## Related Project
 ⚡[Backend Mama Recipe](https://github.com/ChanraSB/chanra-s-bakkara)⚡<br>
 ⚡[Frontend Mama Recipe](https://github.com/ChanraSB/mama-recipe)⚡
+⚡[Mobile Mama Recipe](https://github.com/ChanraSB/react-native-MamaRecipe/)⚡<br>
 
