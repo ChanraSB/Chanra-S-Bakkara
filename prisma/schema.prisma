@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model users {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String?
+  name     String?
+  username String?
+  phone    String?
+  image    String?
+  role     Role      @default(USER)
+  posts    recipes[]
+  likes    likes[]
+}
+
 model recipes {
   id         Int    @id @default(autoincrement())
   title      String
@@ -14,18 +27,21 @@ model recipes {
   image      String
   video_link String
   users_id   Int
+  author     users  @relation(fields: [users_id], references: [id])
+  createdAt  DateTime @default(now())
+  likes_count   Int      @default(0) 
+  likes    likes[]
+}
+model likes {
+  id         Int      @id @default(autoincrement())
+  recipeId   Int
+  userId     Int
+  isLiked    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  recipe     recipes   @relation(fields: [recipeId], references: [id])
+  user       users     @relation(fields: [userId], references: [id])
 }
 enum Role {
   ADMIN
   USER
-}
-model users {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  password String?
-  name     String?
-  username String?
-  phone    String?
-  image    String?
-  role Role @default(USER)
 }

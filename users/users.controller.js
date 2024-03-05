@@ -2,6 +2,8 @@ import userModel from "./users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cloudinary from "../helper/cloudinary.js";
+import prisma from "../src/db.js";
+
 const usersController = {
   listUsers: async (req, res) => {
     try {
@@ -78,7 +80,7 @@ const usersController = {
   },
   updateAllDataUsers: async (req, res) => {
     try {
-      const UserId = parseInt(req.params.id);
+      const userId = parseInt(req.params.id);
       const { email, password, name, username, phone } = req.body;
       let image = await cloudinary.uploader.upload(req.file.path);
       bcrypt.hash(password, 10, async function (err, hash) {
@@ -87,7 +89,7 @@ const usersController = {
         } else {
           image = image.url;
           const userData = { email, password: hash, name, username, phone, image };
-          const result = await userModel.updateAllDataUsers(UserId, userData, image);
+          const result = await userModel.updateAllDataUsers(userId, userData);
           console.log(result);
           res.status(200);
           res.send({
@@ -100,24 +102,17 @@ const usersController = {
       console.log(err.message);
     }
   },
-  updateDataUsers: async (req, res) => {
+  updateProfilPicture: async (req, res) => {
     try {
-      const UserId = parseInt(req.params.id);
+      const userId = parseInt(req.userId);
       let image = await cloudinary.uploader.upload(req.file.path);
-      const { email, password, name, username, phone } = req.body;
-      bcrypt.hash(password, 10, async function (err, hash) {
-        if (!hash) {
-          console.log("Error hash password");
-        } else {
-          image = image.url;
-          const userData = { email, password: hash, name, username, phone, image };
-          const result = await userModel.updateDataUsers(UserId, userData);
-          res.status(200);
-          res.send({
-            message: "update user success",
-            data: result,
-          });
-        }
+      image = image.url;
+      const userData = { image };
+      const result = await userModel.updateDataUsers(userId, userData);
+      res.status(200);
+      res.send({
+        message: "update user success",
+        data: result,
       });
     } catch (err) {
       console.log(err.message);
@@ -151,10 +146,38 @@ const usersController = {
         return res.status(401).json({ error: "Authentication failed" });
       }
       const token = jwt.sign({ id: result.id, name: result.name }, process.env.SECRET_ACCESS_KEY, { expiresIn: "1h" });
-      console.log(token);
+      const refreshToken = jwt.sign({ id: result.id, name: result.name }, process.env.SECRET_ACCESS_KEY, { expiresIn: "1d" });
       res.json({
         message: "User berhasil login",
         token,
+        refreshToken,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
+  profile: async (req, res) => {
+    try {
+      const UserId = parseInt(req.userId);
+      console.log(UserId);
+      const result = await userModel.profile(UserId);
+      res.status(200);
+      res.send({
+        message: "user was founded",
+        data: result,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
+  recipe: async (req, res) => {
+    try {
+      const userId = parseInt(req.userId);
+      const result = await prisma.$queryRaw`SELECT * FROM recipes WHERE users_id=${userId}`;
+      res.status(200);
+      res.send({
+        message: "Recipe was founded",
+        data: result,
       });
     } catch (err) {
       console.log(err.message);

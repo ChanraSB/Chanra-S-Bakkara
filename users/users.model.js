@@ -2,24 +2,7 @@ import prisma from "../src/db.js";
 
 const userModel = {
   getAllUsers: async () => {
-    const user = await prisma.users.findMany({
-      select: {
-        name: true,
-        username: true,
-        image: true,
-      },
-      orderBy: [
-        {
-          name: "desc",
-        },
-        {
-          username: "desc",
-        },
-        {
-          image: "desc",
-        },
-      ],
-    });
+    const user = await prisma.users.findMany();
     return user;
   },
   getUsersById: async (id) => {
@@ -71,7 +54,7 @@ const userModel = {
   },
 
   updateAllDataUsers: async (id, usersData) => {
-    if (!(usersData.email && usersData.password && usersData.name && usersData.username && usersData.phone && usersData.username && usersData.Role)) {
+    if (!(usersData.email && usersData.password && usersData.name && usersData.username && usersData.phone && usersData.username)) {
       throw Error("some field are empty");
     }
     const user = await prisma.users.update({
@@ -95,11 +78,6 @@ const userModel = {
         id,
       },
       data: {
-        email: usersData.email,
-        password: usersData.password,
-        name: usersData.name,
-        username: usersData.username,
-        phone: usersData.phone,
         image: usersData.image,
       },
     });
@@ -114,6 +92,17 @@ const userModel = {
         id,
       },
     });
+    return user;
+  },
+  profile: async (id) => {
+    const user = await prisma.users.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      throw Error("User not found");
+    }
     return user;
   },
 };

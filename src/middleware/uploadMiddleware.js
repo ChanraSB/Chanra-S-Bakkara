@@ -17,7 +17,7 @@ const Multerupload = (req, res, next) => {
       return cb(new Error("only .png, .jpg and .jpeg format allowed"));
     }
   };
-  const maxSize = 1 * 1024 * 1024;
+  const maxSize = 2 * 1024 * 1024;
   var upload = multer({
     storage: storage,
     fileFilter: fileFilter,

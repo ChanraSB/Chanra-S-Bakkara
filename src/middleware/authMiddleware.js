@@ -1,26 +1,27 @@
 import jwt from "jsonwebtoken";
-// import role from "../Role/UserRole.js";
+import createHttpError from "http-errors";
 const verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) {
-    return res.status(401).json({ massage: "access denied" });
-  }
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_ACCESS_KEY);
-    req.userId = decoded.id;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "invalid token" });
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+      token = req.headers.authorization.split(" ")[1];
+
+      let decoded = jwt.verify(token, process.env.SECRET_ACCESS_KEY);
+      req.userId = decoded.id;
+      return next();
+    } else {
+      next(createHttpError(400, "server need token"));
+    }
+  } catch (error) {
+    console.log(error.name);
+    if (error && error.name === "JsonWebTokenError") {
+      next(createHttpError(400, "token invalid"));
+    } else if (error && error.name === "TokenExpiredError") {
+      next(createHttpError(400, "token expired"));
+    } else {
+      next(createHttpError(400, "Token not active"));
+    }
   }
 };
-
-// const simpleAuth = (req, res, next) => {
-//   console.log(role);
-//   if (role == null) {
-//     res.status(401);
-//     return res.send("please login first");
-//   }
-//   next();
-// };
 
 export default verifyToken;
