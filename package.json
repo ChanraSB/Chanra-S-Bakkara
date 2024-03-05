@@ -26,11 +26,12 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "node-fetch": "^2.7.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "prisma": "^5.10.2"
   },
   "devDependencies": {
     "@prisma/client": "^5.10.2",
-    "eslint": "^8.56.0",
-    "prisma": "^5.10.2"
+    "eslint": "^8.56.0"
+    
   }
 }
