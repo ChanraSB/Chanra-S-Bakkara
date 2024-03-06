@@ -10,6 +10,7 @@ router.get("/recipes", recipesController.listRecipes);
 router.get("/recipes/popular", recipesController.getPopularRecipes);
 router.get("/recipes/new", recipesController.getNewRecipes);
 router.get("/recipes/:id", recipesController.searchRecipeById);
+router.get("/recipes/:id/like",verifytoken, recipesController.getMyLike);
 
 router.post("/recipes", verifytoken, upload, recipesController.createRecipe);
 router.delete("/recipes/:id", verifytoken, recipesController.deleteRecipe);

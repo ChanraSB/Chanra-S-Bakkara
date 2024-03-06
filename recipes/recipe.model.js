@@ -142,30 +142,33 @@ const recipeModel = {
       return updatedRecipe;
     
   },
-  unLikeRecipe: async (userId, recipeId, id) => {
-      const existingLike = await prisma.likes.findFirst({
-        where: {
-          userId: userId,
-          recipeId: recipeId
-        }
-      });
-      if (!existingLike) {
-        throw new Error("You've already unliked this recipe.");
+  unLikeRecipe: async (userId, recipeId) => {
+   
+    const existingLike = await prisma.likes.findFirst({
+      where: {
+        userId: userId,
+        recipeId: recipeId
       }
-      await prisma.likes.deleteMany({
-        where: {
-          userId: userId,
-          recipeId: recipeId
-        }
-      });
-      const updatedRecipe = await prisma.recipes.update({
-        where: { id : recipeId, },
-        data: { likes_count: { decrement: 1 } },
-        include: { likes: true } 
-      });
-
-      return updatedRecipe;
-    
+    });
+  
+    if (!existingLike) {
+      throw new Error("You haven't liked this recipe.");
+    }
+  
+    await prisma.likes.delete({
+      where: {
+        id: existingLike.id 
+      }
+    });
+  
+  
+    const updatedRecipe = await prisma.recipes.update({
+      where: { id : recipeId },
+      data: { likes_count: { decrement: 1 } },
+      include: { likes: true } 
+    });
+  
+    return updatedRecipe;
   },
   
   getPopularRecipes: async (orderBy) => {
@@ -184,6 +187,15 @@ const recipeModel = {
     });
     return recipe;
   },
+  getmylike: async (recipeId, userId) => {
+    const recipe = await prisma.likes.findFirst({
+      where : {
+        recipeId : recipeId, 
+        userId : userId
+      }
+    })
+    return recipe
+  }
   
 };
 

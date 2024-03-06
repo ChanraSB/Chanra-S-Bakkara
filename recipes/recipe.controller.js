@@ -182,8 +182,8 @@ const recipesController = {
   },
   getNewRecipes: async (req, res) => {
     try {
-      const created_at = req.body
-      const result = await model.getNewRecipes(created_at);
+      const createdAt = req.body
+      const result = await model.getNewRecipes(createdAt);
       res.status(200).json({
         message: "Popular recipes retrieved successfully",
         data: result,
@@ -193,6 +193,18 @@ const recipesController = {
       
     }
   },
+  getMyLike : async (req, res) => {
+    try {
+      const recipeId = parseInt(req.params.id)
+      const userId = parseInt(req.userId)
+      const result = await model.getmylike(recipeId, userId)
+      res.status(200).json({
+        data : result
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 };
 export default recipesController;
