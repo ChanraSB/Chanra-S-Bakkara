@@ -195,8 +195,24 @@ const recipeModel = {
       }
     })
     return recipe
-  }
+  },
+  getAllMyLikedRecipe: async (userId) => {
+    const checkMyLikeRecipe = await prisma.likes.findMany({
+      where: {
+        userId,
+      },
+    });
+    const recipeIds = checkMyLikeRecipe.map((like) => like.recipeId) 
+    const recipes = await prisma.recipes.findMany({
+      where: {
+        id: {
+          in: recipeIds,
+        },
+      },
+    });
   
+    return recipes;
+  }
 };
 
 const model = recipeModel;

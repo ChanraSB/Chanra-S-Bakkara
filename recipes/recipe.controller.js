@@ -204,6 +204,18 @@ const recipesController = {
     } catch (error) {
       console.log(error)
     }
+  },
+  getAllMyLike : async (req, res) => {
+    try {
+      const userId = parseInt(req.userId)
+      console.log("user id ", req.userId)
+      const result = await model.getAllMyLikedRecipe( userId)
+      res.status(200).json({
+        data: result
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 };
