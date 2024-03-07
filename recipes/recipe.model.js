@@ -47,11 +47,11 @@ const recipeModel = {
   postRecipe: async (newRecipeData) => {
     const recipe = await prisma.recipes.create({
       data: {
-        users_id: newRecipeData.users_id,
         title: newRecipeData.title,
         ingredient: newRecipeData.ingredient,
         image: newRecipeData.image,
         video_link: newRecipeData.video_link,
+        users_id : newRecipeData.users_id
       },
     });
     return recipe;

@@ -46,7 +46,7 @@ const recipesController = {
       const users_id = parseInt(req.userId);
       let image = await cloudinary.uploader.upload(req.file.path);
       image = image.url;
-      const newRecipeData = { title, ingredient, image, video_link, users_id };
+      const newRecipeData = { title, ingredient, image, video_link, users_id};
       console.log(newRecipeData);
       const result = await model.postRecipe(newRecipeData);
       
