@@ -3,7 +3,7 @@ import multer from "multer";
 const Multerupload = (req, res, next) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, __dirname);
+      cb(null, "/public");
     },
     filename: function (req, file, cb) {
       if (file && file.fieldname) { // Check if 'file' object is defined and has 'fieldname' property
