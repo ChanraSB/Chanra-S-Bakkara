@@ -82,7 +82,7 @@ const recipesController = {
       const recipeId = parseInt(req.params.id);
       const { title, ingredient, video_link } = req.body;
       const users_id = parseInt(req.userId);
-      let image = await cloudinary.uploader.upload(req.file);
+      let image = await cloudinary.uploader.upload(req.file.path);
       console.log(image);
       image = image.url;
       const newRecipeData = { title, ingredient, image, video_link, users_id };
