@@ -120,7 +120,7 @@ const recipesController = {
       const recipeId = parseInt(req.params.id);
       const result = await model.deleteRecipe(recipeId);
       res.status(200);
-      res.send("Reciped deleted", result);
+      res.send({message :"Reciped deleted", data : result});
     } catch (err) {
       console.log(err.message);
     }

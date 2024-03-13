@@ -136,17 +136,22 @@ const usersController = {
     try {
       const { email, password } = req.body;
       const result = await userModel.postLogin(email);
+  
       if (!result) {
         return res.status(401).json({
-          error: "authentication failed",
+          error: "Authentication failed",
         });
       }
-      const passwordMatch = bcrypt.compare(password, result.password);
+  
+      const passwordMatch = await bcrypt.compare(password, result.password);
+  
       if (!passwordMatch) {
-        return res.status(401).json({ error: "Authentication failed" });
+        return res.status(401).json({ error: "Your email or password is incorrect" });
       }
+  
       const token = jwt.sign({ id: result.id, name: result.name }, process.env.SECRET_ACCESS_KEY, { expiresIn: "1h" });
       const refreshToken = jwt.sign({ id: result.id, name: result.name }, process.env.SECRET_ACCESS_KEY, { expiresIn: "1d" });
+  
       res.json({
         message: "User berhasil login",
         token,
@@ -154,6 +159,7 @@ const usersController = {
       });
     } catch (err) {
       console.log(err.message);
+      res.status(500).json({ error: "Internal server error" });
     }
   },
   profile: async (req, res) => {

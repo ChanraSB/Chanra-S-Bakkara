@@ -101,7 +101,7 @@ const recipeModel = {
     if (typeof id !== "number") {
       throw Error("ID is not a number");
     }
-    const recipe = await prisma.recipes.delete({
+    const recipe = await prisma.recipes.deleteMany({
       where: {
         id,
       },

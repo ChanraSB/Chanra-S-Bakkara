@@ -19,10 +19,13 @@ const userModel = {
     }
     return user;
   },
-  postLogin: async (email) => {
+  postLogin: async (email, userData) => {
     const user = await prisma.users.findUnique({
       where: {
         email,
+      },
+      select: {
+        password: true,
       },
     });
     return user;
